@@ -3,74 +3,7 @@ import Link from "next/link";
 import { createClient } from "@/lib/supabase/server";
 import { getAppUrl } from "@/lib/app-url";
 import type { QrCode } from "@/types";
-
-function QrCodeCard({ qr, appUrl }: { qr: QrCode; appUrl: string }) {
-  const shortUrl = `${appUrl}/r/${qr.short_code}`;
-  return (
-    <div
-      className="group rounded-2xl border p-5 transition-shadow hover:shadow-md"
-      style={{ background: "#fff", borderColor: "var(--nav-border)" }}
-    >
-      <div className="flex items-start justify-between gap-3">
-        <div className="min-w-0 flex-1">
-          <div className="flex items-center gap-2">
-            <span
-              className="font-heading text-sm font-semibold truncate"
-              style={{ color: "var(--primary-dark)" }}
-            >
-              {qr.title ?? qr.short_code}
-            </span>
-            {!qr.is_active && (
-              <span className="flex-shrink-0 rounded-full bg-gray-100 px-2 py-0.5 text-xs text-gray-500">
-                已停用
-              </span>
-            )}
-          </div>
-          <a
-            href={shortUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="mt-0.5 block text-xs truncate hover:underline"
-            style={{ color: "var(--primary)" }}
-          >
-            {shortUrl}
-          </a>
-          <p className="mt-1 text-xs truncate" style={{ color: "var(--muted)" }}>
-            → {qr.target_url}
-          </p>
-        </div>
-        <div className="flex-shrink-0 text-right">
-          <div className="text-xl font-bold" style={{ color: "var(--foreground)" }}>
-            {qr.scan_count.toLocaleString()}
-          </div>
-          <div className="text-xs" style={{ color: "var(--muted)" }}>次扫描</div>
-        </div>
-      </div>
-
-      <div className="mt-4 flex items-center justify-between">
-        <span className="text-xs" style={{ color: "var(--muted)" }}>
-          {new Date(qr.created_at).toLocaleDateString("zh-CN")}
-        </span>
-        <div className="flex items-center gap-2">
-          <Link
-            href={`/dashboard/${qr.id}`}
-            className="rounded-lg px-3 py-1 text-xs font-medium transition-colors hover:bg-purple-50"
-            style={{ color: "var(--primary)" }}
-          >
-            编辑
-          </Link>
-          <Link
-            href={`/dashboard/${qr.id}/stats`}
-            className="rounded-lg px-3 py-1 text-xs font-medium transition-colors hover:bg-purple-50"
-            style={{ color: "var(--primary)" }}
-          >
-            统计
-          </Link>
-        </div>
-      </div>
-    </div>
-  );
-}
+import { QrCodeCard } from "@/components/dashboard/QrCodeCard";
 
 export default async function DashboardPage() {
   const supabase = await createClient();
@@ -80,6 +13,7 @@ export default async function DashboardPage() {
   const { data: qrCodes } = await supabase
     .from("qr_codes")
     .select("*")
+    .eq("created_by", user.id)
     .order("created_at", { ascending: false });
 
   const appUrl = getAppUrl();

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, type Ref } from "react";
 import QRCode from "qrcode";
 
 interface QrCodeImgProps {
@@ -8,6 +8,8 @@ interface QrCodeImgProps {
   size?: number;
   className?: string;
   ecLevel?: "L" | "M" | "Q" | "H";
+  imgId?: string;
+  imgRef?: Ref<HTMLImageElement>;
 }
 
 function Placeholder({ size }: { size: number }) {
@@ -34,7 +36,7 @@ function Placeholder({ size }: { size: number }) {
   );
 }
 
-export function QrCodeImg({ value, size = 192, className = "", ecLevel = "M" }: QrCodeImgProps) {
+export function QrCodeImg({ value, size = 192, className = "", ecLevel = "M", imgId, imgRef }: QrCodeImgProps) {
   const [dataUrl, setDataUrl] = useState<string>("");
 
   useEffect(() => {
@@ -53,6 +55,8 @@ export function QrCodeImg({ value, size = 192, className = "", ecLevel = "M" }: 
 
   return (
     <img
+      ref={imgRef}
+      id={imgId}
       src={dataUrl}
       alt="二维码"
       width={size}
