@@ -1,13 +1,30 @@
-// SWR Hook：获取当前用户的二维码列表，支持乐观更新
-// 依赖 GET /api/qrcodes
+import useSWR, { type KeyedMutator } from "swr";
 import type { QrCode } from "@/types";
 
-export function useQrCodes(): {
+const fetcher = (url: string) =>
+  fetch(url).then((r) => {
+    if (!r.ok) throw new Error("请求失败");
+    return r.json();
+  });
+
+export interface UseQrCodesReturn {
   qrCodes: QrCode[];
   isLoading: boolean;
   error: Error | undefined;
-  mutate: () => void;
-} {
-  // TODO: 实现 SWR 数据获取
-  return { qrCodes: [], isLoading: false, error: undefined, mutate: () => {} };
+  mutate: KeyedMutator<{ data: QrCode[] }>;
+}
+
+export function useQrCodes(): UseQrCodesReturn {
+  const { data, error, isLoading, mutate } = useSWR<{ data: QrCode[] }>(
+    "/api/qrcodes",
+    fetcher,
+    { revalidateOnFocus: true }
+  );
+
+  return {
+    qrCodes: data?.data ?? [],
+    isLoading,
+    error,
+    mutate,
+  };
 }
