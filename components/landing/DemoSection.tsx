@@ -15,7 +15,7 @@ const EC_OPTIONS: { label: string; value: EcLevel }[] = [
 ];
 
 export function DemoSection() {
-  const { openAuthModal } = useApp();
+  const { openAuthModal, openCreateModal, user } = useApp();
 
   const [url, setUrl]         = useState("https://dynaQR.io/r/demo");
   const [code, setCode]       = useState("demo");
@@ -179,13 +179,23 @@ export function DemoSection() {
               </div>
 
               {/* CTA */}
-              <button
-                type="button"
-                onClick={() => openAuthModal("register")}
-                className="cta-btn mt-2 w-full cursor-pointer rounded-xl py-3 text-sm font-semibold text-white transition-colors duration-150 focus:outline-none"
-              >
-                注册并保存此二维码
-              </button>
+              {user ? (
+                <button
+                  type="button"
+                  onClick={openCreateModal}
+                  className="cta-btn mt-2 w-full cursor-pointer rounded-xl py-3 text-sm font-semibold text-white transition-colors duration-150 focus:outline-none"
+                >
+                  立即创建二维码
+                </button>
+              ) : (
+                <button
+                  type="button"
+                  onClick={() => openAuthModal("register")}
+                  className="cta-btn mt-2 w-full cursor-pointer rounded-xl py-3 text-sm font-semibold text-white transition-colors duration-150 focus:outline-none"
+                >
+                  注册并保存此二维码
+                </button>
+              )}
             </div>
 
             {/* 右侧：预览区 */}
