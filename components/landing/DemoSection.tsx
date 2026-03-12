@@ -1,4 +1,4 @@
-import { SectionHeader } from "@/app/components/ui/SectionHeader";
+import { SectionHeader } from "@/components/ui/SectionHeader";
 
 const EC_LEVELS = ["低 L", "中 M", "高 Q", "极高 H"] as const;
 

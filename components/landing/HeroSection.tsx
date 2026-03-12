@@ -1,4 +1,4 @@
-import { SectionBadge } from "@/app/components/ui/SectionBadge";
+import { SectionBadge } from "@/components/ui/SectionBadge";
 import { HeroQRCard } from "./HeroQRCard";
 
 const BULLET_POINTS = [

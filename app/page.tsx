@@ -1,7 +1,10 @@
-import { HeroSection }      from "@/app/components/landing/HeroSection";
-import { FeaturesSection }   from "@/app/components/landing/FeaturesSection";
-import { HowItWorksSection } from "@/app/components/landing/HowItWorksSection";
-import { DemoSection }       from "@/app/components/landing/DemoSection";
+import { HeroSection }         from "@/components/landing/HeroSection";
+import { FeaturesSection }     from "@/components/landing/FeaturesSection";
+import { HowItWorksSection }   from "@/components/landing/HowItWorksSection";
+import { DemoSection }         from "@/components/landing/DemoSection";
+import { SocialProofSection }  from "@/components/landing/SocialProofSection";
+import { CtaSection }          from "@/components/landing/CtaSection";
+import { Footer }              from "@/components/layout/Footer";
 
 export default function Home() {
   return (
@@ -12,7 +15,10 @@ export default function Home() {
         <FeaturesSection />
         <HowItWorksSection />
         <DemoSection />
+        <SocialProofSection />
+        <CtaSection />
       </main>
+      <Footer />
     </div>
   );
 }

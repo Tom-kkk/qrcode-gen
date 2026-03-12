@@ -1,5 +1,5 @@
 import type { ReactNode } from "react";
-import { SectionHeader } from "@/app/components/ui/SectionHeader";
+import { SectionHeader } from "@/components/ui/SectionHeader";
 
 interface Feature {
   icon: ReactNode;
