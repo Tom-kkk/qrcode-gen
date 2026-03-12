@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { createClient } from "@/lib/supabase/server";
 import { createQrCodeSchema } from "@/lib/validators";
 import { generateShortCode } from "@/lib/short-code";
+import { getShortLinkUrl } from "@/lib/app-url";
 import QRCode from "qrcode";
 
 /** GET /api/qrcodes — 获取当前用户所有二维码 */
@@ -67,8 +68,7 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: "该短码已被使用，请换一个" }, { status: 409 });
   }
 
-  const appUrl = process.env.NEXT_PUBLIC_APP_URL ?? "http://localhost:3000";
-  const shortUrl = `${appUrl}/r/${shortCode}`;
+  const shortUrl = getShortLinkUrl(shortCode);
 
   // 生成二维码 SVG
   const qrCodeSvg = await QRCode.toString(shortUrl, {

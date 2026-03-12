@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { createClient } from "@/lib/supabase/server";
 import { updateQrCodeSchema } from "@/lib/validators";
+import { getShortLinkUrl } from "@/lib/app-url";
 import QRCode from "qrcode";
 
 type Params = { params: Promise<{ id: string }> };
@@ -24,8 +25,7 @@ export async function GET(_req: NextRequest, { params }: Params) {
     return NextResponse.json({ error: "二维码不存在" }, { status: 404 });
   }
 
-  const appUrl = process.env.NEXT_PUBLIC_APP_URL ?? "http://localhost:3000";
-  const shortUrl = `${appUrl}/r/${data.short_code}`;
+  const shortUrl = getShortLinkUrl(data.short_code);
   const qrCodeSvg = await QRCode.toString(shortUrl, {
     type: "svg",
     errorCorrectionLevel: "M",

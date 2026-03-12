@@ -1,6 +1,7 @@
 import { redirect } from "next/navigation";
 import Link from "next/link";
 import { createClient } from "@/lib/supabase/server";
+import { getAppUrl } from "@/lib/app-url";
 import type { QrCode } from "@/types";
 
 function QrCodeCard({ qr, appUrl }: { qr: QrCode; appUrl: string }) {
@@ -81,7 +82,7 @@ export default async function DashboardPage() {
     .select("*")
     .order("created_at", { ascending: false });
 
-  const appUrl = process.env.NEXT_PUBLIC_APP_URL ?? "http://localhost:3000";
+  const appUrl = getAppUrl();
   const list = (qrCodes ?? []) as QrCode[];
 
   return (

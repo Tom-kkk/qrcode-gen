@@ -10,10 +10,13 @@ interface CreateQrModalProps {
   showToast: (message: string) => void;
 }
 
-const APP_ORIGIN =
-  typeof window !== "undefined"
-    ? window.location.origin
-    : process.env.NEXT_PUBLIC_APP_URL ?? "http://localhost:3000";
+function getPreviewBaseUrl(): string {
+  if (typeof window !== "undefined") {
+    return window.location.origin.replace(/\/+$/, "");
+  }
+  const url = process.env.NEXT_PUBLIC_APP_URL ?? "http://localhost:3000";
+  return url.replace(/\/+$/, "");
+}
 
 export function CreateQrModal({ open, onClose, showToast }: CreateQrModalProps) {
   const [title, setTitle] = useState("");
@@ -31,7 +34,7 @@ export function CreateQrModal({ open, onClose, showToast }: CreateQrModalProps) 
     debounceRef.current = setTimeout(() => {
       const c = code.trim() || "xxxxxx";
       if (url.trim()) {
-        setPreviewUrl(`${APP_ORIGIN}/r/${c}`);
+        setPreviewUrl(`${getPreviewBaseUrl()}/r/${c}`);
       } else {
         setPreviewUrl("");
       }
