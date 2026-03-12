@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { SectionBadge } from "@/components/ui/SectionBadge";
 import { HeroQRCard } from "./HeroQRCard";
 import { useApp } from "@/app/providers";
@@ -23,7 +24,7 @@ function CheckIcon() {
 }
 
 function HeroCopy() {
-  const { openAuthModal } = useApp();
+  const { openAuthModal, user } = useApp();
 
   return (
     <div className="fade-in-up">
@@ -75,13 +76,22 @@ function HeroCopy() {
       </ul>
 
       <div className="flex flex-col gap-3 sm:flex-row">
-        <button
-          type="button"
-          onClick={() => openAuthModal("register")}
-          className="cta-btn cursor-pointer rounded-xl px-8 py-3.5 text-base font-semibold text-white transition-colors duration-150 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2"
-        >
-          免费开始使用
-        </button>
+        {user ? (
+          <Link
+            href="/dashboard"
+            className="cta-btn inline-flex items-center justify-center cursor-pointer rounded-xl px-8 py-3.5 text-base font-semibold text-white transition-colors duration-150 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2"
+          >
+            进入控制台
+          </Link>
+        ) : (
+          <button
+            type="button"
+            onClick={() => openAuthModal("register")}
+            className="cta-btn cursor-pointer rounded-xl px-8 py-3.5 text-base font-semibold text-white transition-colors duration-150 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2"
+          >
+            免费开始使用
+          </button>
+        )}
         <a
           href="#demo"
           className="flex cursor-pointer items-center justify-center gap-2 rounded-xl border-2 px-8 py-3.5 text-base font-semibold transition-colors duration-150 focus:outline-none hover:bg-purple-50"
