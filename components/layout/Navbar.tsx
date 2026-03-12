@@ -1,6 +1,8 @@
 "use client";
 
 import Link from "next/link";
+import { usePathname, useRouter } from "next/navigation";
+import { useApp } from "@/app/providers";
 
 const DynaQRLogo = () => (
   <div className="h-8 w-8 flex-shrink-0 rounded-lg bg-[var(--primary)] flex items-center justify-center">
@@ -23,14 +25,19 @@ const DynaQRLogo = () => (
   </div>
 );
 
-export function Navbar({
-  isLoggedIn = false,
-  userName = "用户",
-}: {
-  isLoggedIn?: boolean;
-  userName?: string;
-}) {
-  const avatarLetter = userName.charAt(0).toUpperCase() || "U";
+export function Navbar() {
+  const pathname = usePathname();
+  const router = useRouter();
+  const { user, openAuthModal } = useApp();
+
+  // 在 dashboard 路由下隐藏（DashboardHeader 会替代它）
+  if (pathname.startsWith("/dashboard")) return null;
+
+  const avatarLetter = (user?.user_metadata?.username as string)?.[0]?.toUpperCase()
+    ?? user?.email?.[0]?.toUpperCase()
+    ?? "U";
+  const displayName =
+    (user?.user_metadata?.username as string) ?? user?.email?.split("@")[0] ?? "用户";
 
   return (
     <nav
@@ -59,55 +66,54 @@ export function Navbar({
       </Link>
 
       {/* Desktop nav links */}
-      <div className="hidden md:flex items-center gap-6 text-sm font-medium text-gray-500 transition-colors duration-150">
-        <Link
-          href="#features"
-          className="cursor-pointer transition-colors duration-150 hover:text-[var(--primary)]"
-        >
+      <div className="hidden md:flex items-center gap-6 text-sm font-medium text-gray-500">
+        <Link href="#features" className="cursor-pointer transition-colors duration-150 hover:text-[var(--primary)]">
           功能
         </Link>
-        <Link
-          href="#how-it-works"
-          className="cursor-pointer transition-colors duration-150 hover:text-[var(--primary)]"
-        >
+        <Link href="#how-it-works" className="cursor-pointer transition-colors duration-150 hover:text-[var(--primary)]">
           流程
         </Link>
-        <Link
-          href="#demo"
-          className="cursor-pointer transition-colors duration-150 hover:text-[var(--primary)]"
-        >
+        <Link href="#demo" className="cursor-pointer transition-colors duration-150 hover:text-[var(--primary)]">
           体验
         </Link>
       </div>
 
-      {/* Guest / User */}
-      {!isLoggedIn ? (
+      {/* Guest buttons */}
+      {!user ? (
         <div className="flex items-center gap-2">
           <button
             type="button"
-            className="cursor-pointer rounded-xl px-3 py-1.5 text-sm font-medium transition-colors duration-150 focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--primary)] focus-visible:ring-offset-2 hover:bg-purple-50 hover:text-[var(--primary)]"
+            onClick={() => openAuthModal("login")}
+            className="cursor-pointer rounded-xl px-3 py-1.5 text-sm font-medium transition-colors duration-150 hover:bg-purple-50 hover:text-[var(--primary)]"
             style={{ color: "var(--primary-dark)" }}
           >
             登录
           </button>
           <button
             type="button"
-            className="cursor-pointer rounded-xl px-4 py-2 text-sm font-semibold text-white transition-colors duration-150 focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--primary)] focus-visible:ring-offset-2 hover:opacity-90"
+            onClick={() => openAuthModal("register")}
+            className="cursor-pointer rounded-xl px-4 py-2 text-sm font-semibold text-white transition-colors duration-150 hover:opacity-90"
             style={{ backgroundColor: "var(--primary)" }}
           >
             免费注册
           </button>
         </div>
       ) : (
+        /* Logged-in user */
         <div className="flex items-center gap-3">
           <button
             type="button"
-            className="hidden cursor-pointer rounded-xl px-3 py-1.5 text-sm font-medium transition-colors duration-150 focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--primary)] sm:block hover:bg-purple-50 hover:text-[var(--primary)]"
+            onClick={() => router.push("/dashboard")}
+            className="hidden cursor-pointer rounded-xl px-3 py-1.5 text-sm font-medium transition-colors duration-150 sm:block hover:bg-purple-50 hover:text-[var(--primary)]"
             style={{ color: "var(--primary-dark)" }}
           >
             管理台
           </button>
-          <div className="flex cursor-pointer items-center gap-2">
+          <button
+            type="button"
+            onClick={() => router.push("/dashboard")}
+            className="flex cursor-pointer items-center gap-2 focus:outline-none"
+          >
             <div
               className="flex h-8 w-8 select-none items-center justify-center rounded-full text-sm font-bold text-white"
               style={{ background: "var(--primary)" }}
@@ -116,9 +122,9 @@ export function Navbar({
               {avatarLetter}
             </div>
             <span className="hidden text-sm font-medium sm:block" style={{ color: "var(--muted-strong)" }}>
-              {userName}
+              {displayName}
             </span>
-          </div>
+          </button>
         </div>
       )}
     </nav>

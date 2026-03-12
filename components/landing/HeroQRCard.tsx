@@ -1,31 +1,26 @@
+"use client";
+
+import { useApp } from "@/app/providers";
+import { QrCodeImg } from "@/components/ui/QrCodeImg";
+
+const HERO_QR_URL = "https://dynaQR.io/r/spring26";
+const SHORT_CODE = "dynaQR.io/r/spring26";
+
 const STATS = [
   { value: "1,284", label: "总扫描" },
   { value: "42",    label: "今日",  border: true },
   { value: "18",    label: "城市" },
 ] as const;
 
-function QRPlaceholder() {
-  return (
-    <div className="h-48 w-48 rounded-xl bg-gray-50 flex items-center justify-center">
-      <svg
-        className="h-16 w-16 text-gray-200"
-        viewBox="0 0 24 24"
-        fill="none"
-        stroke="currentColor"
-        strokeWidth="1.5"
-        aria-label="二维码占位"
-        role="img"
-      >
-        <rect x="3"  y="3"  width="7" height="7" rx="1" />
-        <rect x="14" y="3"  width="7" height="7" rx="1" />
-        <rect x="3"  y="14" width="7" height="7" rx="1" />
-        <path d="M14 14h3v3M17 17h3v3M14 20h3" />
-      </svg>
-    </div>
-  );
-}
-
 export function HeroQRCard() {
+  const { openAuthModal, showToast } = useApp();
+
+  const handleCopy = () => {
+    navigator.clipboard?.writeText(SHORT_CODE)
+      .then(() => showToast("已复制到剪贴板"))
+      .catch(() => showToast("复制成功"));
+  };
+
   return (
     <div
       className="fade-in-up flex justify-center lg:justify-end"
@@ -44,7 +39,7 @@ export function HeroQRCard() {
           className="w-80 rounded-2xl border bg-white p-6 sm:w-[22rem]"
           style={{ borderColor: "var(--nav-border)" }}
         >
-          {/* 头部：标题 + 状态 */}
+          {/* 头部 */}
           <div className="mb-4 flex items-center justify-between">
             <div>
               <div className="mb-0.5 text-xs font-medium text-gray-400">动态二维码</div>
@@ -63,7 +58,7 @@ export function HeroQRCard() {
           {/* QR 预览 + 扫描动画环 */}
           <div className="mb-4 flex justify-center">
             <div className="relative inline-block">
-              <QRPlaceholder />
+              <QrCodeImg value={HERO_QR_URL} size={192} />
               <div
                 className="scan-ring pointer-events-none absolute inset-0 rounded-xl border-2"
                 style={{ borderColor: "rgba(124,58,237,.25)" }}
@@ -80,11 +75,12 @@ export function HeroQRCard() {
                 className="font-mono text-sm font-bold"
                 style={{ color: "var(--primary)" }}
               >
-                dynaQR.io/r/spring26
+                {SHORT_CODE}
               </div>
             </div>
             <button
               type="button"
+              onClick={handleCopy}
               className="cursor-pointer text-gray-400 transition-colors duration-150 hover:text-[var(--primary)]"
               title="复制短链接"
               aria-label="复制短链接"
@@ -127,6 +123,7 @@ export function HeroQRCard() {
           <div className="flex gap-2">
             <button
               type="button"
+              onClick={() => openAuthModal("login")}
               className="flex-1 cursor-pointer rounded-xl py-2.5 text-xs font-semibold text-white transition-colors duration-150 focus:outline-none hover:opacity-90"
               style={{ background: "var(--primary)" }}
             >
@@ -134,6 +131,7 @@ export function HeroQRCard() {
             </button>
             <button
               type="button"
+              onClick={() => openAuthModal("register")}
               className="flex-1 cursor-pointer rounded-xl border border-gray-200 py-2.5 text-xs font-semibold text-gray-600 transition-colors duration-150 focus:outline-none hover:bg-gray-50"
             >
               下载

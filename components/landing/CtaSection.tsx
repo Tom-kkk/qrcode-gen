@@ -1,5 +1,10 @@
-// 落地页底部 CTA 区（"准备好让二维码活起来了吗？"）
+"use client";
+
+import { useApp } from "@/app/providers";
+
 export function CtaSection() {
+  const { openAuthModal } = useApp();
+
   return (
     <section className="py-24 px-4">
       <div className="max-w-2xl mx-auto text-center">
@@ -14,7 +19,8 @@ export function CtaSection() {
         </p>
         <button
           type="button"
-          className="cta-btn cursor-pointer rounded-xl px-10 py-4 text-base font-semibold text-white transition-colors duration-150"
+          onClick={() => openAuthModal("register")}
+          className="cta-btn cursor-pointer rounded-xl px-10 py-4 text-base font-semibold text-white transition-colors duration-150 focus:outline-none"
         >
           立即免费注册
         </button>

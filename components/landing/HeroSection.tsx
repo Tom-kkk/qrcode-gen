@@ -1,5 +1,8 @@
+"use client";
+
 import { SectionBadge } from "@/components/ui/SectionBadge";
 import { HeroQRCard } from "./HeroQRCard";
+import { useApp } from "@/app/providers";
 
 const BULLET_POINTS = [
   "二维码图形永远不变，目标 URL 随时修改",
@@ -20,6 +23,8 @@ function CheckIcon() {
 }
 
 function HeroCopy() {
+  const { openAuthModal } = useApp();
+
   return (
     <div className="fade-in-up">
       <SectionBadge>
@@ -72,6 +77,7 @@ function HeroCopy() {
       <div className="flex flex-col gap-3 sm:flex-row">
         <button
           type="button"
+          onClick={() => openAuthModal("register")}
           className="cta-btn cursor-pointer rounded-xl px-8 py-3.5 text-base font-semibold text-white transition-colors duration-150 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2"
         >
           免费开始使用

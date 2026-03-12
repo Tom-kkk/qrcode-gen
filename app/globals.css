@@ -83,7 +83,7 @@ body {
   font-family: var(--font-heading), ui-sans-serif, system-ui, sans-serif;
 }
 
-/* CTA 按钮颜色（Server Component 无法用 onMouseEnter，用 CSS 代替） */
+/* CTA 按钮（橙色） */
 .cta-btn {
   background: var(--cta);
 }
@@ -91,8 +91,22 @@ body {
   background: var(--cta-hover);
 }
 
-/* Demo 表单输入框 focus ring */
-.demo-input:focus {
+/* Primary 按钮（紫色） */
+.primary-btn {
+  background: var(--primary);
+}
+.primary-btn:hover {
+  background: var(--primary-hover);
+}
+
+/* 表单输入框 focus ring */
+.demo-input:focus,
+.auth-input:focus {
   border-color: var(--primary);
   box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.15);
 }
+
+/* 自定义滚动条 */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: #f1f5f9; }
+::-webkit-scrollbar-thumb { background: #a78bfa; border-radius: 3px; }
