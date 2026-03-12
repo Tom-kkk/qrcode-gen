@@ -32,6 +32,38 @@
   --font-mono: var(--font-geist-mono);
 }
 
+/* 动画 */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes scanPulse {
+  0%,
+  100% {
+    opacity: 0.3;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.7;
+    transform: scale(1.06);
+  }
+}
+
+.fade-in-up {
+  animation: fadeInUp 0.45s ease both;
+}
+
+.scan-ring {
+  animation: scanPulse 2.4s ease-in-out infinite;
+}
+
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,
@@ -49,4 +81,18 @@ body {
 
 .font-heading {
   font-family: var(--font-heading), ui-sans-serif, system-ui, sans-serif;
+}
+
+/* CTA 按钮颜色（Server Component 无法用 onMouseEnter，用 CSS 代替） */
+.cta-btn {
+  background: var(--cta);
+}
+.cta-btn:hover {
+  background: var(--cta-hover);
+}
+
+/* Demo 表单输入框 focus ring */
+.demo-input:focus {
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.15);
 }
