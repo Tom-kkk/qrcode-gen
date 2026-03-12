@@ -49,6 +49,13 @@ export function DashboardHeader() {
 
       <div className="flex items-center gap-3">
         <Link
+          href="/"
+          className="rounded-xl px-3 py-1.5 text-sm font-medium transition-colors hover:bg-purple-50"
+          style={{ color: "var(--muted-strong)" }}
+        >
+          首页
+        </Link>
+        <Link
           href="/dashboard/create"
           className="rounded-xl px-3 py-1.5 text-sm font-semibold text-white transition-opacity hover:opacity-90"
           style={{ background: "var(--primary)" }}

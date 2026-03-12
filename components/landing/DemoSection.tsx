@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useRef, useCallback, useEffect } from "react";
+import Link from "next/link";
 import QRCode from "qrcode";
 import { SectionHeader } from "@/components/ui/SectionHeader";
 import { useApp } from "@/app/providers";
@@ -15,7 +16,7 @@ const EC_OPTIONS: { label: string; value: EcLevel }[] = [
 ];
 
 export function DemoSection() {
-  const { openAuthModal, openCreateModal, user } = useApp();
+  const { openAuthModal, user } = useApp();
 
   const [url, setUrl]         = useState("https://dynaQR.io/r/demo");
   const [code, setCode]       = useState("demo");
@@ -180,13 +181,12 @@ export function DemoSection() {
 
               {/* CTA */}
               {user ? (
-                <button
-                  type="button"
-                  onClick={openCreateModal}
-                  className="cta-btn mt-2 w-full cursor-pointer rounded-xl py-3 text-sm font-semibold text-white transition-colors duration-150 focus:outline-none"
+                <Link
+                  href="/dashboard/create"
+                  className="cta-btn mt-2 flex w-full cursor-pointer items-center justify-center rounded-xl py-3 text-sm font-semibold text-white transition-colors duration-150 focus:outline-none"
                 >
                   立即创建二维码
-                </button>
+                </Link>
               ) : (
                 <button
                   type="button"
