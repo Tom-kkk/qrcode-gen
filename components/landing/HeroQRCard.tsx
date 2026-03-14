@@ -1,5 +1,6 @@
 "use client";
 
+import { useRouter } from "next/navigation";
 import { useApp } from "@/app/providers";
 import { QrCodeImg } from "@/components/ui/QrCodeImg";
 
@@ -13,7 +14,8 @@ const STATS = [
 ] as const;
 
 export function HeroQRCard() {
-  const { openAuthModal, showToast } = useApp();
+  const { user, openAuthModal, showToast } = useApp();
+  const router = useRouter();
 
   const handleCopy = () => {
     navigator.clipboard?.writeText(SHORT_CODE)
@@ -123,7 +125,7 @@ export function HeroQRCard() {
           <div className="flex gap-2">
             <button
               type="button"
-              onClick={() => openAuthModal("login")}
+              onClick={() => user ? router.push("/dashboard") : openAuthModal("login")}
               className="flex-1 cursor-pointer rounded-xl py-2.5 text-xs font-semibold text-white transition-colors duration-150 focus:outline-none hover:opacity-90"
               style={{ background: "var(--primary)" }}
             >
