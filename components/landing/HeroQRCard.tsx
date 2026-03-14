@@ -1,6 +1,5 @@
 "use client";
 
-import { useRouter } from "next/navigation";
 import { useApp } from "@/app/providers";
 import { QrCodeImg } from "@/components/ui/QrCodeImg";
 
@@ -14,8 +13,7 @@ const STATS = [
 ] as const;
 
 export function HeroQRCard() {
-  const { user, openAuthModal, showToast } = useApp();
-  const router = useRouter();
+  const { showToast } = useApp();
 
   const handleCopy = () => {
     navigator.clipboard?.writeText(SHORT_CODE)
@@ -121,24 +119,6 @@ export function HeroQRCard() {
             ))}
           </div>
 
-          {/* 操作 */}
-          <div className="flex gap-2">
-            <button
-              type="button"
-              onClick={() => user ? router.push("/dashboard") : openAuthModal("login")}
-              className="flex-1 cursor-pointer rounded-xl py-2.5 text-xs font-semibold text-white transition-colors duration-150 focus:outline-none hover:opacity-90"
-              style={{ background: "var(--primary)" }}
-            >
-              修改目标
-            </button>
-            <button
-              type="button"
-              onClick={() => openAuthModal("register")}
-              className="flex-1 cursor-pointer rounded-xl border border-gray-200 py-2.5 text-xs font-semibold text-gray-600 transition-colors duration-150 focus:outline-none hover:bg-gray-50"
-            >
-              下载
-            </button>
-          </div>
         </div>
       </div>
     </div>
